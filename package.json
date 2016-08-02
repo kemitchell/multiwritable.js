@@ -1,0 +1,23 @@
+{
+  "name": "multiwritable",
+  "version": "0.0.0",
+  "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
+  "files": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "repository": "kemitchell/multiwritable.js",
+  "dependencies": {
+    "defined": "^1.0.0",
+    "through2": "^2.0.1"
+  },
+  "devDependencies": {
+    "from2-array": "0.0.4",
+    "pump": "^1.0.1",
+    "tape": "^4.6.0",
+    "temporary-directory": "^1.0.2"
+  },
+  "scripts": {
+    "test": "node test.js"
+  }
+}
