@@ -1,6 +1,7 @@
 {
   "name": "multiwritable",
   "version": "0.0.0",
+  "description": "a writable stream that writes to multiple other streams one after another",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "files": [
     "index.js"
