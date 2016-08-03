@@ -20,6 +20,11 @@
   ],
   "license": "MIT",
   "repository": "kemitchell/multiwritable.js",
+  "keywords": [
+    "multiple",
+    "stream",
+    "writable"
+  ],
   "scripts": {
     "lint": "standard",
     "test": "node test.js",
