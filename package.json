@@ -14,10 +14,12 @@
   "devDependencies": {
     "from2-array": "0.0.4",
     "pump": "^1.0.1",
+    "standard": "^7.1.2",
     "tape": "^4.6.0",
     "temporary-directory": "^1.0.2"
   },
   "scripts": {
+    "lint": "standard",
     "test": "node test.js"
   }
 }
