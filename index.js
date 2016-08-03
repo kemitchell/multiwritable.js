@@ -66,6 +66,7 @@ function MultiWritable (sinkFactory, options) {
     sinkFactory(
       currentSink, chunk, encoding,
       function (error, nextSink) {
+        /* istanbul ignore if */
         if (error) {
           callback(error)
         } else {
