@@ -47,48 +47,48 @@ function MultiWritable (sinkFactory, options) {
 
   var proxy = through2(transformOptions)
 
-  var repiper = through2(
-    transformOptions,
-    function (chunk, encoding, callback) {
-      var self = this
-      sinkFactory(
-        currentSink, chunk, encoding,
-        function (error, nextSink) {
-          if (error) {
-            callback(error)
-          } else {
-            if (nextSink !== currentSink) {
-              if (currentSink) {
-                proxy.unpipe()
-                if (endSinks) {
-                  currentSink.end()
-                }
-              }
+  var repiper = through2(transformOptions, transform, flush)
+
+  function transform (chunk, encoding, callback) {
+    var self = this
+    sinkFactory(
+      currentSink, chunk, encoding,
+      function (error, nextSink) {
+        if (error) {
+          callback(error)
+        } else {
+          if (nextSink !== currentSink) {
+            if (currentSink) {
+              proxy.unpipe()
               if (endSinks) {
-                nextSink.once('finish', function () {
-                  finishedSinkCount++
-                  if (finishedSinkCount === sinkCount) {
-                    emit.call(repiper, 'finish')
-                  }
-                })
+                currentSink.end()
               }
-              proxy.pipe(nextSink, {end: endSinks})
-              currentSink = nextSink
-              sinkCount++
             }
-            self.push(chunk, encoding)
-            callback()
+            if (endSinks) {
+              nextSink.once('finish', function () {
+                finishedSinkCount++
+                if (finishedSinkCount === sinkCount) {
+                  emit.call(repiper, 'finish')
+                }
+              })
+            }
+            proxy.pipe(nextSink, {end: endSinks})
+            currentSink = nextSink
+            sinkCount++
           }
+          self.push(chunk, encoding)
+          callback()
         }
-      )
-    },
-    function (callback) {
-      if (endSinks) {
-        currentSink.end()
       }
-      callback()
+    )
+  }
+
+  function flush (callback) {
+    if (endSinks) {
+      currentSink.end()
     }
-  )
+    callback()
+  }
 
   if (endSinks) {
     repiper.emit = function doNotEmitNormalFinish (event) {
