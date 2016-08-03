@@ -35,7 +35,7 @@ tape('succession of files', function (test) {
       )
       files.forEach(function (file, index) {
         var fileContent = fs.readFileSync(file, {encoding: 'ascii'})
-        test.equal(fileContent, data[index])
+        test.equal(fileContent, data[index], 'reads ' + data[index])
       })
       cleanUp()
       test.end()
