@@ -31,22 +31,24 @@ module.exports = MultiWritable
 //           |                                                 |
 //           +-------------------------------------------------+
 
-var defaultOptions = {
-  objectMode: false,
-  end: true
-}
-
 function MultiWritable (sinkFactory, options) {
-  options = firstDefined(options, defaultOptions)
+  options = firstDefined(options, {})
   var endSinks = firstDefined(options.end, true)
+  var objectMode = firstDefined(options.objectMode, false)
+
   var finishedSinkCount = 0
   var sinkCount = 0
   var currentSink = null
 
-  var proxy = through2(options)
+  var transformOptions = {
+    writableObjectMode: objectMode,
+    readableObjectMode: objectMode
+  }
+
+  var proxy = through2(transformOptions)
 
   var repiper = through2(
-    options,
+    transformOptions,
     function (chunk, encoding, callback) {
       var self = this
       sinkFactory(
@@ -96,7 +98,7 @@ function MultiWritable (sinkFactory, options) {
     }
   }
 
-  repiper.pipe(proxy, {end: false})
+  repiper.pipe(proxy, {end: endSinks})
 
   return repiper
 }

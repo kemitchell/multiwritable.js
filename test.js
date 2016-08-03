@@ -24,8 +24,7 @@ tape('succession of files', function (test) {
     })()
     var options = {
       end: true,
-      writableObjectMode: true,
-      readableObjectMode: true
+      objectMode: true
     }
     pump(source, new MultiWritable(factory, options))
     .once('finish', function () {
